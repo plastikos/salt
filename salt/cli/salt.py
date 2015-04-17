@@ -5,7 +5,7 @@ from __future__ import absolute_import
 import os
 import sys
 
-from salt._compat import string_types
+import salt.ext.six as six
 from salt.utils import parsers, print_cli
 from salt.utils.verify import verify_files
 from salt.exceptions import (
@@ -236,7 +236,7 @@ class SaltCMD(parsers.SaltCMDOptionParser):
         for each_minion in ret:
             minion_ret = ret[each_minion].get('ret')
             if (
-                    isinstance(minion_ret, string_types)
+                    isinstance(minion_ret, six.string_types)
                     and minion_ret.startswith("Minion did not return")
             ):
                 not_return_counter += 1
