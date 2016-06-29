@@ -8,7 +8,7 @@ import integration
 from salttesting import skipIf
 
 # Import Salt libs
-import salt.runner
+import salt.test_runner
 
 
 class RunnerModuleTest(integration.TestCase, integration.AdaptedConfigurationTestCaseMixIn):
@@ -22,7 +22,7 @@ class RunnerModuleTest(integration.TestCase, integration.AdaptedConfigurationTes
         '''
         Configure an eauth user to test with
         '''
-        self.runner = salt.runner.RunnerClient(self.get_config('client_config'))
+        self.test_runner = salt.test_runner.RunnerClient(self.get_config('client_config'))
 
     def test_eauth(self):
         '''
@@ -37,7 +37,7 @@ class RunnerModuleTest(integration.TestCase, integration.AdaptedConfigurationTes
         }
         low.update(self.eauth_creds)
 
-        self.runner.master_call(**low)
+        self.test_runner.master_call(**low)
 
     def test_token(self):
         '''
@@ -51,7 +51,7 @@ class RunnerModuleTest(integration.TestCase, integration.AdaptedConfigurationTes
         auth = salt.auth.LoadAuth(self.get_config('client_config'))
         token = auth.mk_token(self.eauth_creds)
 
-        self.runner.master_call(**{
+        self.test_runner.master_call(**{
             'client': 'runner',
             'fun': 'error.error',
             'token': token['token'],
@@ -65,7 +65,7 @@ class RunnerModuleTest(integration.TestCase, integration.AdaptedConfigurationTes
         }
         low.update(self.eauth_creds)
 
-        self.runner.cmd_sync(low)
+        self.test_runner.cmd_sync(low)
 
     def test_cmd_async(self):
         low = {
@@ -74,7 +74,7 @@ class RunnerModuleTest(integration.TestCase, integration.AdaptedConfigurationTes
         }
         low.update(self.eauth_creds)
 
-        self.runner.cmd_async(low)
+        self.test_runner.cmd_async(low)
 
     @skipIf(True, 'to be reenabled when #23623 is merged')
     def test_cmd_sync_w_arg(self):
@@ -85,7 +85,7 @@ class RunnerModuleTest(integration.TestCase, integration.AdaptedConfigurationTes
         }
         low.update(self.eauth_creds)
 
-        ret = self.runner.cmd_sync(low)
+        ret = self.test_runner.cmd_sync(low)
         self.assertEqual(ret['kwargs']['foo'], 'Foo!')
         self.assertEqual(ret['kwargs']['bar'], 'Bar!')
 
@@ -99,9 +99,4 @@ class RunnerModuleTest(integration.TestCase, integration.AdaptedConfigurationTes
             'foo': 'Foo!',
             'bar': 'Bar!',
         }
-        self.runner.cmd_sync(low)
-
-
-if __name__ == '__main__':
-    from integration import run_tests
-    run_tests(RunnerModuleTest, needs_daemon=True)
+        self.test_runner.cmd_sync(low)
