@@ -6,11 +6,7 @@ from distutils.version import LooseVersion  # pylint: disable=import-error,no-na
 
 # Import Salt Testing libs
 from salttesting import skipIf
-from salttesting.helpers import (
-    ensure_in_syspath,
-    requires_network
-)
-ensure_in_syspath('../../')
+from salttesting.helpers import requires_network
 
 # Import salt libs
 import integration
@@ -97,7 +93,7 @@ class PillarModuleTest(integration.ModuleCase):
 
     def no_test_issue_10408_ext_pillar_gitfs_url_update(self):
         import os
-        from salt.pillar import git_pillar
+        from salt.test_pillar import git_pillar
         original_url = 'git+ssh://original@example.com/home/git/test'
         changed_url = 'git+ssh://changed@example.com/home/git/test'
         rp_location = os.path.join(self.master_opts['cachedir'], 'pillar_gitfs/0/.git')
@@ -124,7 +120,3 @@ class PillarModuleTest(integration.ModuleCase):
         self.assertDictContainsSubset(
             {'knights': ['Lancelot', 'Galahad', 'Bedevere', 'Robin']},
             get_items)
-
-if __name__ == '__main__':
-    from integration import run_tests
-    run_tests(PillarModuleTest)
