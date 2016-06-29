@@ -9,15 +9,12 @@ import os
 import traceback
 
 # Import Salt Testing Libs
-from salttesting.helpers import ensure_in_syspath
 from salttesting.mixins import RUNTIME_VARS
-
-ensure_in_syspath('../../')
 
 # Import Salt libs
 import integration
 import salt.config
-from salt.output import display_output
+from salt.test_output import display_output
 import salt.config
 
 
@@ -102,8 +99,3 @@ class OutputReturnTest(integration.ShellCase):
             # display trace in error message for debugging on jenkins
             trace = traceback.format_exc()
             self.assertEqual(trace, '')
-
-
-if __name__ == '__main__':
-    from integration import run_tests
-    run_tests(OutputReturnTest)
