@@ -8,13 +8,9 @@ from __future__ import absolute_import
 import os
 import time
 
-# Import Salt Testing libs
-from salttesting import skipIf
-from salttesting.helpers import (
-    destructiveTest,
-    requires_system_grains,
-    requires_salt_modules
-)
+# Import 3rd-party libs
+import pytest
+from salttesting.helpers import requires_system_grains, requires_salt_modules
 
 # Import salt libs
 import integration
@@ -108,14 +104,14 @@ def pkgmgr_avail(run_function, grains):
     return True
 
 
-@destructiveTest
+@pytest.mark.destructive_test
 @requires_salt_modules('pkg.version', 'pkg.latest_version')
 class PkgTest(integration.ModuleCase,
               integration.SaltReturnAssertsMixIn):
     '''
     pkg.installed state tests
     '''
-    @skipIf(salt.utils.is_windows(), 'minion is windows')
+    @pytest.mark.skipif(salt.utils.is_windows(), 'minion is windows')
     @requires_system_grains
     def test_pkg_001_installed(self, grains=None):
         '''
@@ -146,7 +142,7 @@ class PkgTest(integration.ModuleCase,
         ret = self.run_state('pkg.removed', name=target)
         self.assertSaltTrueReturn(ret)
 
-    @skipIf(salt.utils.is_windows(), 'minion is windows')
+    @pytest.mark.skipif(salt.utils.is_windows(), 'minion is windows')
     @requires_system_grains
     def test_pkg_002_installed_with_version(self, grains=None):
         '''
@@ -191,7 +187,7 @@ class PkgTest(integration.ModuleCase,
         ret = self.run_state('pkg.removed', name=target)
         self.assertSaltTrueReturn(ret)
 
-    @skipIf(salt.utils.is_windows(), 'minion is windows')
+    @pytest.mark.skipif(salt.utils.is_windows(), 'minion is windows')
     @requires_system_grains
     def test_pkg_003_installed_multipkg(self, grains=None):
         '''
@@ -220,7 +216,7 @@ class PkgTest(integration.ModuleCase,
         ret = self.run_state('pkg.removed', name=None, pkgs=pkg_targets)
         self.assertSaltTrueReturn(ret)
 
-    @skipIf(salt.utils.is_windows(), 'minion is windows')
+    @pytest.mark.skipif(salt.utils.is_windows(), 'minion is windows')
     @requires_system_grains
     def test_pkg_004_installed_multipkg_with_version(self, grains=None):
         '''
@@ -266,7 +262,7 @@ class PkgTest(integration.ModuleCase,
         ret = self.run_state('pkg.removed', name=None, pkgs=pkg_targets)
         self.assertSaltTrueReturn(ret)
 
-    @skipIf(salt.utils.is_windows(), 'minion is windows')
+    @pytest.mark.skipif(salt.utils.is_windows(), 'minion is windows')
     @requires_system_grains
     def test_pkg_005_installed_32bit(self, grains=None):
         '''
@@ -301,7 +297,7 @@ class PkgTest(integration.ModuleCase,
             ret = self.run_state('pkg.removed', name=target)
             self.assertSaltTrueReturn(ret)
 
-    @skipIf(salt.utils.is_windows(), 'minion is windows')
+    @pytest.mark.skipif(salt.utils.is_windows(), 'minion is windows')
     @requires_system_grains
     def test_pkg_006_installed_32bit_with_version(self, grains=None):
         '''
@@ -345,7 +341,7 @@ class PkgTest(integration.ModuleCase,
             ret = self.run_state('pkg.removed', name=target)
             self.assertSaltTrueReturn(ret)
 
-    @skipIf(salt.utils.is_windows(), 'minion is windows')
+    @pytest.mark.skipif(salt.utils.is_windows(), 'minion is windows')
     @requires_system_grains
     def test_pkg_007_with_dot_in_pkgname(self, grains=None):
         '''
@@ -373,7 +369,7 @@ class PkgTest(integration.ModuleCase,
             ret = self.run_state('pkg.removed', name=target)
             self.assertSaltTrueReturn(ret)
 
-    @skipIf(salt.utils.is_windows(), 'minion is windows')
+    @pytest.mark.skipif(salt.utils.is_windows(), 'minion is windows')
     @requires_system_grains
     def test_pkg_with_epoch_in_version(self, grains=None):
         '''
@@ -401,8 +397,8 @@ class PkgTest(integration.ModuleCase,
             ret = self.run_state('pkg.removed', name=target)
             self.assertSaltTrueReturn(ret)
 
-    @destructiveTest
-    @skipIf(salt.utils.is_windows(), 'minion is windows')
+    @pytest.mark.skipif(salt.utils.is_windows(), 'minion is windows')
+    @pytest.mark.destructive_test
     def test_pkg_008_latest_with_epoch(self):
         '''
         This tests for the following issue:
